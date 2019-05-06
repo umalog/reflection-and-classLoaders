@@ -9,8 +9,8 @@ public class ProxyDemo {
         trainer.talk();
         trainer.teach();
 
+        System.out.println("_____ Cупер-тренер: _____");
 
-        System.out.println("Создание супер-тренера:");
         ClassLoader classLoader = ProxyDemo.class.getClassLoader();
         Class<?>[] interfaces = new Class[]{Trainer.class};
         TrainerMan invocationHandler = new TrainerMan(trainer);

@@ -23,15 +23,12 @@ public class ReflectionDemo {
                 "  SimpleName->" + human.getClass().getSimpleName() +
                 "  CanonicalName->" + human.getClass().getCanonicalName());
         System.out.println();
-
         printFields(human);
         System.out.println();
-
         changeFields(human);
         System.out.println();
 
         readAnnotation(Human.class);
-
     }
 
     private static void printFields(Object obj) throws IllegalAccessException {
@@ -66,11 +63,29 @@ public class ReflectionDemo {
     private static void readAnnotation(Class aClass) {
         Annotation[] annotations = aClass.getAnnotations();
         for (Annotation annotation : annotations) {
-            System.out.println("Аннотация " + annotation);
+            System.out.println(annotation);
         }
+
         HumanAnnotation annotation = (HumanAnnotation) aClass.getAnnotation(HumanAnnotation.class);
         if (annotation != null) {
             System.out.println(annotation.name());
         }
+    }
+
+
+    /**
+     * @param field - поле с которого надо снять все ограничения.
+     * Warning : поля примитивных типов или строки ,инициализированные значением в месте определения,
+     * а не в конструкторе, Изменить не удасться (зависит от JVM и настроек компилятора)
+     */
+    private static void setAbsolutelyAccessible(Field field) {
+        try {
+            field.setAccessible(true);
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {/* it's OK */}
     }
 }

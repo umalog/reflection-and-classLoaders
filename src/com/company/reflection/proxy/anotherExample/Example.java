@@ -13,17 +13,15 @@ public class Example {
         Class<?>[] interfaces = FileParser.class.getInterfaces();
         InvocationHandler invocationHandler = new AopExample(new FileParser());
 
-//        Parser fileser = (Parser) Proxy.newProxyInstance(classLoader, interfaces, invocationHandler);
-//
-//        fileser.read();
-//        fileser.copy(Paths.get("tmp.txt"));
+        Parser fileser = (Parser) Proxy.newProxyInstance(classLoader, interfaces, invocationHandler);
+        fileser.read();
+        fileser.copy(Paths.get("tmp.txt"));
 
 
         Parser mockParser = (Parser) Proxy.newProxyInstance(classLoader, interfaces, new MockExample());
-
         mockParser.read();
         Path path = Paths.get("tmp.txt");
-//        mockParser.copy(path);
+        mockParser.copy(path);
 
     }
 }
